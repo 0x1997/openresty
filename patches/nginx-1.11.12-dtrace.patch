@@ -206,16 +206,16 @@ diff --git a/auto/modules b/auto/modules
 index 2074778..a722871 100644
 --- a/auto/modules
 +++ b/auto/modules
-@@ -75,7 +75,8 @@ if :; then
-                      src/http/ngx_http_variables.h \
-                      src/http/ngx_http_script.h \
-                      src/http/ngx_http_upstream.h \
--                     src/http/ngx_http_upstream_round_robin.h"
-+                     src/http/ngx_http_upstream_round_robin.h \
-+                     src/http/ngx_http_probe.h"
-     ngx_module_srcs="src/http/ngx_http.c \
-                      src/http/ngx_http_core_module.c \
-                      src/http/ngx_http_special_response.c \
+@@ -77,7 +77,8 @@
+                          src/http/ngx_http_variables.h \
+                          src/http/ngx_http_script.h \
+                          src/http/ngx_http_upstream.h \
+-                         src/http/ngx_http_upstream_round_robin.h"
++                         src/http/ngx_http_upstream_round_robin.h \
++                         src/http/ngx_http_probe.h"
+         ngx_module_srcs="src/http/ngx_http.c \
+                          src/http/ngx_http_core_module.c \
+                          src/http/ngx_http_special_response.c \
 diff --git a/auto/options b/auto/options
 index 2833fb1..f02b8b8 100644
 --- a/auto/options

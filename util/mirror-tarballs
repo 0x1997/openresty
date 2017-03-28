@@ -28,7 +28,7 @@ fi
 #################################
 
 ver="$main_ver"
-$root/util/get-tarball "https://openresty.org/download/nginx-$ver.tar.gz" -O nginx-$ver.tar.gz || exit 1
+$root/util/get-tarball "http://nginx.org/download/nginx-$ver.tar.gz" -O nginx-$ver.tar.gz || exit 1
 tar -xzf nginx-$ver.tar.gz || exit 1
 cd nginx-$ver || exit 1
 
@@ -57,13 +57,6 @@ fi
 
 echo "$info_txt applying the upstream-pipelining patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-upstream_pipelining.patch || exit 1
-echo
-
-echo "$info_txt applying the server_header patch for nginx"
-cp $root/patches/nginx-$main_ver-server_header.patch server_header.patch || exit 1
-sed $"s/NGINX_VERSION \".unknown\"/NGINX_VERSION \".$minor_ver\"/" server_header.patch \
-    > server_header.patch.tmp && mv -f server_header.patch.tmp server_header.patch || exit 1
-patch -p1 < server_header.patch || exit 1
 echo
 
 #patch -p1 < $root/patches/nginx-$main_ver-redirect_memcpy_overlap.patch || exit 1
@@ -337,9 +330,6 @@ echo "$info_txt applying the safe_resolver_ipv6_option patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-safe_resolver_ipv6_option.patch || exit 1
 echo
 
-cp $root/html/index.html docs/html/ || exit 1
-cp $root/html/50x.html docs/html/ || exit 1
-
 cd .. || exit 1
 
 cp $root/patches/nginx-$main_ver-no_pool.patch ./nginx-no_pool.patch || exit 1
@@ -355,6 +345,11 @@ ver=0.60
 $root/util/get-tarball "https://github.com/openresty/echo-nginx-module/tarball/v$ver" -O echo-nginx-module-$ver.tar.gz || exit 1
 tar -xzf echo-nginx-module-$ver.tar.gz || exit 1
 mv openresty-echo-nginx-module-* echo-nginx-module-$ver || exit 1
+cd echo-nginx-module-$ver
+echo "applying ngx_http_echo-$ver-chain_links.patch"
+patch -p1 < $root/patches/ngx_http_echo-$ver-chain_links.patch || exit 1
+echo
+cd ..
 
 #################################
 
@@ -411,6 +406,11 @@ ver=0.10.7
 $root/util/get-tarball "https://github.com/openresty/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv openresty-lua-nginx-module-* ngx_lua-$ver || exit 1
+cd ngx_lua-$ver
+echo "applying ngx_http_lua-$ver-chain_links.patch"
+patch -p1 < $root/patches/ngx_http_lua-$ver-chain_links.patch || exit 1
+echo
+cd ..
 
 #################################
 
@@ -432,6 +432,11 @@ ver=0.17
 $root/util/get-tarball "https://github.com/openresty/memc-nginx-module/tarball/v$ver" -O memc-nginx-module-$ver.tar.gz || exit 1
 tar -xzf memc-nginx-module-$ver.tar.gz || exit 1
 mv openresty-memc-nginx-module-* memc-nginx-module-$ver || exit 1
+cd memc-nginx-module-$ver
+echo "applying ngx_http_memc-$ver-no_default_port.patch"
+patch -p1 < $root/patches/ngx_http_memc-$ver-no_default_port.patch || exit 1
+echo
+cd ..
 
 #################################
 
@@ -471,7 +476,7 @@ mv openresty-encrypted-session-nginx-module-* encrypted-session-nginx-module-$ve
 
 #################################
 
-ver=0.3.7
+ver=0.3.8
 $root/util/get-tarball "https://people.freebsd.org/~osa/ngx_http_redis-$ver.tar.gz" -O redis-nginx-module-$ver.tar.gz || exit 1
 tar -xzf redis-nginx-module-$ver.tar.gz || exit 1
 mv ngx_http_redis-* redis-nginx-module-$ver || exit 1
@@ -479,10 +484,6 @@ mv ngx_http_redis-* redis-nginx-module-$ver || exit 1
 cd redis-nginx-module-$ver
 echo "applying ngx_http_redis-$ver-variables_in_redis_pass.patch"
 patch -p1 < $root/patches/ngx_http_redis-$ver-variables_in_redis_pass.patch || exit 1
-echo
-
-echo "applying ngx_http_redis-$ver-without_gzip.patch"
-patch -p1 < $root/patches/ngx_http_redis-$ver-without_gzip.patch || exit 1
 echo
 cd ..
 
@@ -506,6 +507,11 @@ ver=0.13
 $root/util/get-tarball "https://github.com/openresty/redis2-nginx-module/tarball/v$ver" -O redis2-nginx-module-$ver.tar.gz || exit 1
 tar -xzf redis2-nginx-module-$ver.tar.gz || exit 1
 mv openresty-redis2-nginx-module-* redis2-nginx-module-$ver || exit 1
+cd redis2-nginx-module-$ver
+echo "applying ngx_http_redis2-$ver-no_default_port.patch"
+patch -p1 < $root/patches/ngx_http_redis2-$ver-no_default_port.patch || exit 1
+echo
+cd ..
 
 #################################
 
@@ -560,6 +566,7 @@ cd LuaJIT-$ver || exit 1;
 echo "$info_txt applying the luajit-win32-default-paths patch for luajit $ver"
 patch -p1 < $root/patches/luajit-win32-default-paths.patch || exit 1
 #rm ../hotfix.patch
+echo
 cd .. || exit 1
 
 #$root/util/get-tarball http://luajit.org/download/beta11_hotfix1.patch -O beta11_hotfix1.patch
