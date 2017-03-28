@@ -1,5 +1,5 @@
---- nginx-1.11.2/src/http/ngx_http_core_module.c	2010-12-14 18:38:42.000000000 +0800
-+++ nginx-1.11.2-patched/src/http/ngx_http_core_module.c	2011-01-30 19:24:34.956354518 +0800
+--- a/src/http/ngx_http_core_module.c	2010-12-14 18:38:42.000000000 +0800
++++ b/src/http/ngx_http_core_module.c	2011-01-30 19:24:34.956354518 +0800
 @@ -57,6 +57,8 @@
      void *conf);
  static char *ngx_http_core_error_page(ngx_conf_t *cf, ngx_command_t *cmd,

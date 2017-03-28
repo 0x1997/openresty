@@ -1,5 +1,5 @@
---- nginx-1.11.2/src/http/modules/ngx_http_log_module.c	2011-11-01 21:24:50.000000000 +0800
-+++ nginx-1.11.2-patched/src/http/modules/ngx_http_log_module.c	2011-11-10 16:17:29.599039534 +0800
+--- a/src/http/modules/ngx_http_log_module.c	2011-11-01 21:24:50.000000000 +0800
++++ b/src/http/modules/ngx_http_log_module.c	2011-11-10 16:17:29.599039534 +0800
 @@ -61,6 +61,8 @@
      time_t                      open_file_cache_valid;
      ngx_uint_t                  open_file_cache_min_uses;
@@ -16,9 +16,9 @@
 -static uintptr_t ngx_http_log_escape(u_char *dst, u_char *src, size_t size);
 +static uintptr_t ngx_http_log_escape(ngx_http_log_loc_conf_t *lcf, u_char *dst,
 +    u_char *src, size_t size);
- 
- 
- static void *ngx_http_log_create_main_conf(ngx_conf_t *cf);
+ static size_t ngx_http_log_json_variable_getlen(ngx_http_request_t *r,
+     uintptr_t data);
+ static u_char *ngx_http_log_json_variable(ngx_http_request_t *r, u_char *buf,
 @@ -146,6 +149,13 @@
        0,
        NULL },
